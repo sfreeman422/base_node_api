@@ -1,6 +1,4 @@
-# MicroJ_Handler
-
-## A handler for CRUD functions for the app.
+# Baseline Typescript Node App
 
 ## Getting Started
 
@@ -13,8 +11,8 @@
   TYPEORM_PORT: 3306,
   TYPEORM_USERNAME: <USER-NAME-FOR-MYSQL>,
   TYPEORM_PASSWORD: <PASSWORD-FOR-MYSQL>,
-  TYPEORM_DATABASE: microjdev,
-  TYPEORM_ENTITIES: /absolute/path/to/mocker/src/shared/db/models/*.ts,
+  TYPEORM_DATABASE: <DATABASE-YOU-INTEND-TO-USE>,
+  TYPEORM_ENTITIES: /absolute/path/to/project/src/shared/db/models/*.ts,
   TYPEORM_SYNCHRONIZE: true
 ```
 
