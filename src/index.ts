@@ -1,11 +1,16 @@
 import 'reflect-metadata'; // Necessary for TypeORM entities.
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 import express, { Application } from 'express';
 import { createConnection, getConnectionOptions } from 'typeorm';
 import { controllers } from './controllers/index.controller';
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
+
+if (!process.env.PRODUCTION) {
+  dotenv.config();
+}
 
 app.use(
   bodyParser.urlencoded({
