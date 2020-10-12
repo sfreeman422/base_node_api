@@ -1,6 +1,6 @@
 FROM node:13
 
-WORKDIR /usr/src/microj_handler
+WORKDIR /usr/src/app
 COPY package.json .
 RUN npm install --only=prod
 COPY . .
