@@ -24,14 +24,14 @@ const connectToDb = async (): Promise<void> => {
   try {
     const options = await getConnectionOptions();
     createConnection(options)
-      .then(connection => {
+      .then((connection) => {
         if (connection.isConnected) {
           console.log(`Connected to MySQL DB: ${options.database}`);
         } else {
           throw Error('Unable to connect to database');
         }
       })
-      .catch(e => console.error(e));
+      .catch((e) => console.error(e));
   } catch (e) {
     console.error(e);
   }
