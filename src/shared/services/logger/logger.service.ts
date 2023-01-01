@@ -6,14 +6,7 @@ export class Logger {
   constructor(label: string) {
     this.logger = createLogger({
       level: 'info',
-      format: format.combine(
-        format.label({ label }),
-        format.timestamp(),
-        format.json(),
-        format.printf(
-          (info) => `[${info.level.toUpperCase()} - ${info.label.toUpperCase()} - ${info.timestamp}] ${info.message}`,
-        ),
-      ),
+      format: format.combine(format.label({ label }), format.timestamp(), format.json(), format.prettyPrint()),
       transports: [
         new transports.Console(),
         new transports.File({ filename: 'error.log', level: 'error' }),
@@ -22,23 +15,23 @@ export class Logger {
     });
   }
 
-  log(level: string, message: string, meta?: any[]): void {
-    this.logger.log(level, message, meta);
+  log(level: string, message: string, meta?: Record<any, any>): void {
+    meta ? this.logger.log(level, message, { meta }) : this.logger.log(level, message);
   }
 
-  debug(message: string, meta?: any[]): void {
-    this.logger.debug(message, meta);
+  debug(message: string, meta?: Record<any, any>): void {
+    meta ? this.logger.debug(message, { meta }) : this.logger.debug(message);
   }
 
-  info(message: string, meta?: any[]): void {
-    this.logger.info(message, meta);
+  info(message: string, meta?: Record<any, any>): void {
+    meta ? this.logger.info(message, { meta }) : this.logger.info(message);
   }
 
-  warn(message: string, meta?: any[]): void {
-    this.logger.warn(message, meta);
+  warn(message: string, meta?: Record<any, any>): void {
+    meta ? this.logger.warn(message, { meta }) : this.logger.warn(message);
   }
 
-  error(message: string, meta?: any[]): void {
-    this.logger.error(message, meta);
+  error(message: string, meta?: Record<any, any>): void {
+    meta ? this.logger.error(message, { meta }) : this.logger.error(message);
   }
 }
