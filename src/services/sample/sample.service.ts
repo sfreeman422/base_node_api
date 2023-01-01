@@ -1,6 +1,10 @@
+import { Logger } from '../../shared/services/logger/logger.service';
+
 export class SampleService {
+  private logger = new Logger('SampleService');
+
   public greet(text: string): string {
-    console.log(text);
+    this.logger.info(text, ['greet()']);
     return text;
   }
 }
