@@ -1,6 +1,8 @@
 import { GetSecretValueCommandOutput, SecretsManager } from '@aws-sdk/client-secrets-manager';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
+import { RedisService } from '../redis/redis.service';
 import { LocalSecretManager } from './local-secret.service';
+import { dbSecretsKey, secretTTL, serviceSecretsKey } from './secret.constants';
 import { SecretServiceEnum } from './secret.enum';
 import { DBSecret, ServiceSecret } from './secret.interface';
 
@@ -9,6 +11,7 @@ export class SecretService {
   private static localInstance: SecretService;
   public readonly serviceType: SecretServiceEnum;
   private secretManager: SecretsManager | LocalSecretManager;
+  private redis = RedisService.getInstance();
 
   public static getInstance(serviceType: SecretServiceEnum): SecretService {
     if (serviceType === SecretServiceEnum.AWS) {
@@ -26,23 +29,27 @@ export class SecretService {
     }
   }
 
-  public readonly entities? = process.env.DB_ENTITIES;
-  private dataSourceOptions?: MysqlConnectionOptions;
-  private serviceSecrets?: ServiceSecret;
-
   constructor(serviceType: SecretServiceEnum) {
     this.serviceType = serviceType;
     this.secretManager = serviceType === 'AWS' ? new SecretsManager({ region: 'us-east-1' }) : new LocalSecretManager();
   }
 
   async getServiceSecrets(): Promise<ServiceSecret | undefined> {
-    if (this.serviceSecrets) {
-      return this.serviceSecrets;
+    const serviceSecrets = await this.redis.getValue(serviceSecretsKey).then((x) => {
+      if (x) {
+        return JSON.parse(x) as ServiceSecret;
+      }
+      return null;
+    });
+
+    if (serviceSecrets) {
+      return serviceSecrets;
     }
+
     return this.getSecret('MOODLY_ME_SERVICES_SECRETS')
-      .then((secret: string) => {
+      .then(async (secret: string) => {
         const secretJson: ServiceSecret = JSON.parse(secret);
-        this.serviceSecrets = secretJson; //  This should really live in redis.
+        await this.redis.setValueWithExpireSeconds(serviceSecretsKey, JSON.stringify(secretJson), secretTTL);
         return secretJson as ServiceSecret;
       })
       .catch((e: Error) => {
@@ -51,11 +58,19 @@ export class SecretService {
   }
 
   async getDataSourceOptions(): Promise<MysqlConnectionOptions | undefined> {
-    if (this.dataSourceOptions) {
-      return this.dataSourceOptions;
+    const dbSecrets = await this.redis.getValue(dbSecretsKey).then((x) => {
+      if (x) {
+        return JSON.parse(x) as MysqlConnectionOptions;
+      }
+      return null;
+    });
+
+    if (dbSecrets) {
+      return dbSecrets;
     }
+
     return await this.getSecret('MOODLY_ME_DB_INSTANCE')
-      .then((secret: string) => {
+      .then(async (secret: string) => {
         const secretJson: DBSecret = JSON.parse(secret);
         const dataSourceOptions: MysqlConnectionOptions = {
           username: secretJson.username,
@@ -64,10 +79,9 @@ export class SecretService {
           host: secretJson.host,
           port: Number(secretJson.port),
           synchronize: secretJson.synchronize,
-          entities: [secretJson.entities],
           database: secretJson.dbInstanceIdentifier,
         };
-        this.dataSourceOptions = dataSourceOptions; // This should really live in redis
+        await this.redis.setValueWithExpireSeconds(dbSecretsKey, JSON.stringify(dataSourceOptions), secretTTL);
         return dataSourceOptions;
       })
       .catch((e: Error) => {

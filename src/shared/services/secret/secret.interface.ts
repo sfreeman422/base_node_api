@@ -10,6 +10,5 @@ export interface DBSecret {
   port: string;
   dbInstanceIdentifier: string;
   synchronize: boolean;
-  entities: string;
   type: string;
 }

@@ -1,8 +1,9 @@
 import { DataSource } from 'typeorm';
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 import { Logger } from '../services/logger/logger.service';
-import { SecretServiceEnum } from '../services/secret/secret.interface';
+import { SecretServiceEnum } from '../services/secret/secret.enum';
 import { SecretService } from '../services/secret/secret.service';
-import { SampleModel } from './models/SampleModel';
+import { entities } from './entities';
 
 let AppDataSource: Promise<DataSource>;
 
@@ -10,22 +11,23 @@ const logger = new Logger('AppDataSource');
 
 const secretService = new SecretService(process.env.PRODUCTION ? SecretServiceEnum.AWS : SecretServiceEnum.LOCAL);
 
+const isEnvironmentDefined = (dbSecrets: MysqlConnectionOptions) =>
+  !!(
+    dbSecrets.username &&
+    dbSecrets.password &&
+    dbSecrets.host &&
+    dbSecrets.port &&
+    dbSecrets.database &&
+    dbSecrets.synchronize &&
+    dbSecrets.type
+  );
+
 const getDBSecrets = () => {
   return secretService
     .getDataSourceOptions()
     .then((dbSecrets) => {
       if (dbSecrets) {
-        const isEnvironmentDefined = !!(
-          dbSecrets.username &&
-          dbSecrets.password &&
-          dbSecrets.host &&
-          dbSecrets.port &&
-          dbSecrets.database &&
-          dbSecrets.synchronize &&
-          dbSecrets.type
-        );
-
-        if (!isEnvironmentDefined) {
+        if (!isEnvironmentDefined(dbSecrets)) {
           throw new Error('Missing dbSecrets!');
         }
         return dbSecrets;
@@ -51,7 +53,7 @@ export const getDataSource = async (): Promise<DataSource> => {
       username: secrets.username,
       password: secrets.password,
       database: secrets.database,
-      entities: [SampleModel],
+      entities: entities,
       synchronize: secrets.synchronize,
       logging: false,
     }).initialize();
