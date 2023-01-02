@@ -5,7 +5,7 @@ export class Logger {
 
   constructor(label: string) {
     this.logger = createLogger({
-      level: 'info',
+      level: 'http',
       format: format.combine(format.label({ label }), format.timestamp(), format.json(), format.prettyPrint()),
       transports: [
         new transports.Console(),
@@ -29,6 +29,10 @@ export class Logger {
 
   error(message: string, meta?: Record<any, any>): void {
     this.log('error', message, meta);
+  }
+
+  http(message: string, meta?: Record<any, any>): void {
+    this.log('http', message, meta);
   }
 
   private log(level: string, message: string, meta?: Record<any, any>): void {
