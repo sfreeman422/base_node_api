@@ -15,23 +15,23 @@ export class Logger {
     });
   }
 
-  log(level: string, message: string, meta?: Record<any, any>): void {
-    meta ? this.logger.log(level, message, { meta }) : this.logger.log(level, message);
-  }
-
   debug(message: string, meta?: Record<any, any>): void {
-    meta ? this.logger.debug(message, { meta }) : this.logger.debug(message);
+    this.log('debug', message, meta);
   }
 
   info(message: string, meta?: Record<any, any>): void {
-    meta ? this.logger.info(message, { meta }) : this.logger.info(message);
+    this.log('info', message, meta);
   }
 
   warn(message: string, meta?: Record<any, any>): void {
-    meta ? this.logger.warn(message, { meta }) : this.logger.warn(message);
+    this.log('warn', message, meta);
   }
 
   error(message: string, meta?: Record<any, any>): void {
-    meta ? this.logger.error(message, { meta }) : this.logger.error(message);
+    this.log('error', message, meta);
+  }
+
+  private log(level: string, message: string, meta?: Record<any, any>): void {
+    meta ? this.logger.log(level, message, { meta }) : this.logger.log(level, message);
   }
 }
