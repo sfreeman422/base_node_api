@@ -74,6 +74,7 @@ export class SecretService {
         const dataSourceOptions: MysqlConnectionOptions = {
           username: secretJson.username,
           password: secretJson.password,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           type: secretJson.type as any,
           host: secretJson.host,
           port: Number(secretJson.port),
