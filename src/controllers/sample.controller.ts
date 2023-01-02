@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
-import { Logger } from '../shared/services/logger/logger.service';
 import { SampleService } from '../services/sample/sample.service';
+import { Logger } from '../shared/services/logger/logger.service';
 
 export const sampleController: Router = express.Router();
 
