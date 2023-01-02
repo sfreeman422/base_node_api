@@ -21,6 +21,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.241.0",
     "body-parser": "^1.18.3",
     "dotenv": "^16.0.3",
     "express": "^4.16.4",

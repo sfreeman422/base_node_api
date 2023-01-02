@@ -1,28 +1,58 @@
 import { DataSource } from 'typeorm';
+import { Logger } from '../services/logger/logger.service';
+import { SecretServiceEnum } from '../services/secret/secret.interface';
+import { SecretService } from '../services/secret/secret.service';
 import { SampleModel } from './models/SampleModel';
 
 let AppDataSource: Promise<DataSource>;
 
-const isEnvironmentDefined = () => {
-  const { DB_TYPE, DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;
-  return !!(DB_TYPE && DB_HOST && DB_PORT && DB_USER && DB_PASSWORD && DB_DATABASE);
+const logger = new Logger('AppDataSource');
+
+const secretService = new SecretService(process.env.PRODUCTION ? SecretServiceEnum.AWS : SecretServiceEnum.LOCAL);
+
+const getDBSecrets = () => {
+  return secretService
+    .getDataSourceOptions()
+    .then((dbSecrets) => {
+      if (dbSecrets) {
+        const isEnvironmentDefined = !!(
+          dbSecrets.username &&
+          dbSecrets.password &&
+          dbSecrets.host &&
+          dbSecrets.port &&
+          dbSecrets.database &&
+          dbSecrets.synchronize &&
+          dbSecrets.type
+        );
+
+        if (!isEnvironmentDefined) {
+          throw new Error('Missing dbSecrets!');
+        }
+        return dbSecrets;
+      }
+      throw new Error('Missing DataSourceOptions!');
+    })
+    .catch((e) => {
+      logger.error('Error on secretService.getDataSourceOptions()', { error: e });
+      throw new Error(e);
+    });
 };
 
 export const getDataSource = async (): Promise<DataSource> => {
-  if (!isEnvironmentDefined()) {
-    throw new Error('Missing Environment Variables!');
-  } else if (AppDataSource) {
+  const secrets = await getDBSecrets();
+
+  if (AppDataSource) {
     return AppDataSource;
   } else {
     AppDataSource = new DataSource({
-      type: process.env.DB_TYPE as any,
-      host: process.env.DB_HOST as string,
-      port: process.env.DB_PORT ? Number(process.env.DB_PORT) : undefined,
-      username: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
+      type: secrets.type,
+      host: secrets.host,
+      port: secrets.port,
+      username: secrets.username,
+      password: secrets.password,
+      database: secrets.database,
       entities: [SampleModel],
-      synchronize: true,
+      synchronize: secrets.synchronize,
       logging: false,
     }).initialize();
 
