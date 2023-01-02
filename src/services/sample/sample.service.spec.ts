@@ -5,6 +5,12 @@ describe('SampleService', () => {
 
   beforeEach(() => {
     sampleService = new SampleService();
+    const loggerSpy = jest.spyOn(sampleService.logger, 'info');
+    loggerSpy.mockImplementation(() => '');
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   describe('greet()', () => {
