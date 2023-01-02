@@ -1,4 +1,5 @@
 import ioredis, { Redis } from 'ioredis';
+import { Logger } from '../logger/logger.service';
 
 export class RedisService {
   public static getInstance(): RedisService {
@@ -7,9 +8,11 @@ export class RedisService {
     }
     return RedisService.instance;
   }
-
+  private logger = new Logger('redisService');
   private static instance: RedisService;
-  private static redis: Redis = new ioredis().on('connect', () => console.log('Connected to Redis.'));
+  private static redis: Redis = new ioredis().on('connect', () =>
+    RedisService.getInstance().logger.info('Connected to Redis.'),
+  );
 
   getValue(key: string): Promise<string | null> {
     return RedisService.redis.get(key);

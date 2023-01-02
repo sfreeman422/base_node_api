@@ -1,3 +1,4 @@
-export const serviceSecretsKey = 'moodlyMeServiceSecret'; // Change this
-export const dbSecretsKey = 'moodlyMeDbSecret'; // Change this
-export const secretTTL = 300; // Change this
+// Everything in this file should be modified when using this as a template.
+export const serviceSecretsKey = 'MOODLY_ME_SERVICES_SECRETS';
+export const dbSecretsKey = 'MOODLY_ME_DB_INSTANCE';
+export const secretTTL = 300;

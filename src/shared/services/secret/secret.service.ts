@@ -7,23 +7,22 @@ import { SecretServiceEnum } from './secret.enum';
 import { DBSecret, ServiceSecret } from './secret.interface';
 
 export class SecretService {
-  private static awsInstance: SecretService;
-  private static localInstance: SecretService;
+  private static instance: SecretService;
   public readonly serviceType: SecretServiceEnum;
   private secretManager: SecretsManager | LocalSecretManager;
   private redis = RedisService.getInstance();
 
   public static getInstance(serviceType: SecretServiceEnum): SecretService {
     if (serviceType === SecretServiceEnum.AWS) {
-      if (!SecretService.awsInstance) {
-        SecretService.awsInstance = new SecretService(serviceType);
+      if (!SecretService.instance) {
+        SecretService.instance = new SecretService(serviceType);
       }
-      return SecretService.awsInstance;
+      return SecretService.instance;
     } else if (serviceType === SecretServiceEnum.LOCAL) {
-      if (!SecretService.localInstance) {
-        SecretService.localInstance = new SecretService(serviceType);
+      if (!SecretService.instance) {
+        SecretService.instance = new SecretService(serviceType);
       }
-      return SecretService.localInstance;
+      return SecretService.instance;
     } else {
       throw new Error(`Unable to create SecretService with serviceType of ${serviceType}`);
     }
@@ -46,7 +45,7 @@ export class SecretService {
       return serviceSecrets;
     }
 
-    return this.getSecret('MOODLY_ME_SERVICES_SECRETS')
+    return this.getSecret(serviceSecretsKey)
       .then(async (secret: string) => {
         const secretJson: ServiceSecret = JSON.parse(secret);
         await this.redis.setValueWithExpireSeconds(serviceSecretsKey, JSON.stringify(secretJson), secretTTL);
@@ -69,7 +68,7 @@ export class SecretService {
       return dbSecrets;
     }
 
-    return await this.getSecret('MOODLY_ME_DB_INSTANCE')
+    return await this.getSecret(dbSecretsKey)
       .then(async (secret: string) => {
         const secretJson: DBSecret = JSON.parse(secret);
         const dataSourceOptions: MysqlConnectionOptions = {
