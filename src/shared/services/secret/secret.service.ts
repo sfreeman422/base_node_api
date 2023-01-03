@@ -1,5 +1,6 @@
 import { GetSecretValueCommandOutput, SecretsManager } from '@aws-sdk/client-secrets-manager';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
+import { Logger } from '../logger/logger.service';
 import { RedisService } from '../redis/redis.service';
 import { LocalSecretManager } from './local-secret.service';
 import { dbSecretsKey, secretTTL, serviceSecretsKey } from './secret.constants';
@@ -9,6 +10,7 @@ import { DBSecret, ServiceSecret } from './secret.interface';
 export class SecretService {
   private static instance: SecretService;
   public readonly serviceType: SecretServiceEnum;
+  public logger = new Logger('SecretService');
   private secretManager: SecretsManager | LocalSecretManager;
   private redis = RedisService.getInstance();
 
@@ -42,6 +44,7 @@ export class SecretService {
     });
 
     if (serviceSecrets) {
+      this.logger.info('Service secrets available in cache, returning cached service secrets.');
       return serviceSecrets;
     }
 
@@ -65,6 +68,8 @@ export class SecretService {
     });
 
     if (dbSecrets) {
+      this.logger.info('DB secrets available in cache, returning cached DB secrets.');
+
       return dbSecrets;
     }
 
