@@ -7,6 +7,14 @@
       "request": "launch",
       "runtimeArgs": ["-r", "ts-node/register"],
       "args": ["${workspaceFolder}/src/index.ts"]
+    },
+    {
+      "name": "Debug Jest Tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": ["--inspect-brk", "${workspaceRoot}/node_modules/.bin/jest", "--runInBand", "--coverage", "false"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }
