@@ -18,7 +18,7 @@ describe('SampleService', () => {
       expect(sampleService.greet('Test')).toBe('Test');
     });
 
-    it('should not something it is not given', () => {
+    it('should not return something it is not given', () => {
       expect(sampleService.greet('Test')).not.toBe('test');
     });
   });
