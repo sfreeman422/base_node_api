@@ -1,4 +1,4 @@
-import ioredis, { Redis } from 'ioredis';
+import { Redis } from 'ioredis';
 import { Logger } from '../logger/logger.service';
 
 export class RedisService {
@@ -10,7 +10,7 @@ export class RedisService {
   }
   private logger = new Logger('redisService');
   private static instance: RedisService;
-  private static redis: Redis = new ioredis().on('connect', () =>
+  private static redis: Redis = new Redis().on('connect', () =>
     RedisService.getInstance().logger.info('Connected to Redis.'),
   );
 
