@@ -15,28 +15,23 @@ export class Logger {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  debug(message: string, meta?: Record<any, any>): void {
+  debug(message: string, meta?: Record<string | number | symbol, unknown>): void {
     this.log('debug', message, meta);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  info(message: string, meta?: Record<any, any>): void {
+  info(message: string, meta?: Record<string | number | symbol, unknown>): void {
     this.log('info', message, meta);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  warn(message: string, meta?: Record<any, any>): void {
+  warn(message: string, meta?: Record<string | number | symbol, unknown>): void {
     this.log('warn', message, meta);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  error(message: string, meta?: Record<any, any>): void {
+  error(message: string, meta?: Record<string | number | symbol, unknown>): void {
     this.log('error', message, meta);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  http(message: string, meta?: Record<any, any>): void {
+  http(message: string, meta?: Record<string | number | symbol, unknown>): void {
     this.log('http', message, meta);
   }
 
