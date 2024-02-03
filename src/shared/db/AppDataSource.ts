@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
-import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 import { Logger } from '../services/logger/logger.service';
 import { entities } from './entities';
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
 let AppDataSource: Promise<DataSource>;
 
@@ -21,9 +21,8 @@ export const getDataSource = async (): Promise<DataSource> => {
       database: process.env.database,
       entities: entities,
       synchronize: process.env.synchronize,
-      driver: process.env.driver,
-      logging: false,
-    } as MysqlConnectionOptions).initialize();
+      logging: true,
+    } as PostgresConnectionOptions).initialize();
 
     return AppDataSource;
   }
