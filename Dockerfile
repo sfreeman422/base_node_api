@@ -1,10 +1,15 @@
 FROM node:18-alpine as build
-COPY . .
-RUN npm ci && npm run build:prod
+COPY . /usr/src/app
+WORKDIR /usr/src/app
+RUN npm ci && npm run lint && npm run test && npm run build:prod && npm run minify
 
 FROM node:18-alpine as release
-COPY --from=build ./dist .
-COPY --from=build ./node_modules ./node_modules
-EXPOSE 3000
+ENV NODE_ENV=production PORT=80
+COPY --from=build /usr/src/app/dist /usr/src/app
+COPY --from=build /usr/src/app/package.json /usr/src/app/
+COPY --from=build /usr/src/app/package-lock.json /usr/src/app/
+WORKDIR /usr/src/app
+RUN npm pkg delete scripts.prepare && npm ci --omit=dev && npm prune --production
+EXPOSE 80
 
-CMD ["node", "./index.js"]
+CMD ["node", "/usr/src/app/index.js"]
