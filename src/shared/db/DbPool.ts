@@ -1,14 +1,14 @@
 import { Logger } from '../services/logger/logger.service';
 import { Pool } from 'pg';
 
-export let dbPool: Pool;
+export let DbPool: Pool;
 
 const logger = new Logger('DbPool');
 
 export const createPool = (): Pool => {
-  if (!dbPool) {
+  if (!DbPool) {
     logger.info(`Creating Pool for ${process.env.database}@${process.env.host}:${process.env.dbport}`);
-    dbPool = new Pool({
+    DbPool = new Pool({
       user: process.env.username,
       host: process.env.host,
       database: process.env.database,
@@ -19,5 +19,5 @@ export const createPool = (): Pool => {
     logger.info('Pool created successfully');
   }
 
-  return dbPool;
+  return DbPool;
 };

@@ -4,6 +4,7 @@ import express, { Application } from 'express';
 import { controllers } from './controllers/index.controller';
 import { Logger } from './shared/services/logger/logger.service';
 import { createPool } from './shared/db/DbPool';
+import { correlationIdMiddleWare } from './shared/middleware/correlationId.middleware';
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,7 @@ app.use(
   }),
 );
 app.use(bodyParser.json());
+app.use(correlationIdMiddleWare);
 app.use(controllers);
 
 app.listen(PORT, (e?: Error) => {
