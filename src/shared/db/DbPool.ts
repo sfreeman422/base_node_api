@@ -15,6 +15,8 @@ export const createPool = (): Pool => {
       password: process.env.password,
       port: parseInt(process.env.dbport as string),
     });
+
+    logger.info('Pool created successfully');
   }
 
   return dbPool;

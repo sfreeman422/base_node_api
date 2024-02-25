@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "build:prod": "tsc -p tsconfig.prod.json",
+    "minify": "esbuild dist/**.js dist/**/*.js --bundle --minify --target=node18 --platform=node --outdir=dist --allow-overwrite --packages=external",
     "format:check": "prettier --check 'src/**/*.ts'",
     "format:fix": "prettier --write 'src/**/*.ts'",
     "format:pre-commit": "pretty-quick --staged",
