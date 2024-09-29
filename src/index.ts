@@ -24,6 +24,10 @@ app.use(correlationIdMiddleWare);
 app.use(controllers);
 
 app.listen(PORT, (e?: Error) => {
-  e ? logger.error(e.message) : logger.info('Listening on port 3000');
-  createPool();
+  if (e) {
+    logger.error(e.message);
+  } else {
+    logger.info(`Listening on port ${PORT}`);
+    createPool();
+  }
 });
