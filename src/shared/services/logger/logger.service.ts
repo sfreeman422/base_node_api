@@ -37,6 +37,10 @@ export class Logger {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private log(level: string, message: string, meta?: Record<any, any>): void {
-    meta ? this.logger.log(level, message, { meta }) : this.logger.log(level, message);
+    if (meta) {
+      this.logger.log(level, message, { meta });
+    } else {
+      this.logger.log(level, message);
+    }
   }
 }
