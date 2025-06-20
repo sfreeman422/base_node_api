@@ -51,7 +51,7 @@ export class AuthService {
   }
 
   public async confirmJwt(token: string): Promise<JwtPayload | string | undefined> {
-    if (process.env.MOODLY_ME_PRIVATE_KEY) {
+    if (process.env.AUTH_PRIVATE_KEY) {
       return new Promise((resolve, reject) => {
         jwt.verify(
           token,
@@ -178,7 +178,7 @@ export class AuthService {
   async createNewBearerToken(user: User, correlationId: string): Promise<string> {
     return this.callJwtSign(
       user.id,
-      process.env.MOODLY_ME_PRIVATE_KEY as string,
+      process.env.AUTH_PRIVATE_KEY as string,
       { expiresIn: bearerTokenExpTime },
       correlationId,
     ).then((encoded) => encoded);
@@ -187,7 +187,7 @@ export class AuthService {
   async createNewRefreshToken(user: User, correlationId: string): Promise<string> {
     return this.callJwtSign(
       user.id,
-      process.env.MOODLY_ME_PRIVATE_KEY as string,
+      process.env.AUTH_PRIVATE_KEY as string,
       { expiresIn: refreshTokenExpTime },
       correlationId,
     ).then((encoded) => encoded);
