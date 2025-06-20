@@ -1,3 +1,4 @@
-import { sampleController } from './sample.controller';
+import { authController } from './auth/auth.controller';
+import { userController } from './user/user.controller';
 
-export const controllers = [sampleController];
+export const controllers = [authController, userController];

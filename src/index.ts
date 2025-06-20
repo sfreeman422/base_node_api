@@ -1,9 +1,10 @@
+import './env';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import express, { Application } from 'express';
 import { controllers } from './controllers/index.controller';
 import { Logger } from './shared/services/logger/logger.service';
-import { createPool } from './shared/db/DbPool';
+import { createOrGetPool } from './shared/db/DbPool';
 import { correlationIdMiddleWare } from './shared/middleware/correlationId.middleware';
 
 const app: Application = express();
@@ -14,11 +15,7 @@ if (!process.env.PRODUCTION) {
   dotenv.config();
 }
 
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  }),
-);
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(correlationIdMiddleWare);
 app.use(controllers);
@@ -28,6 +25,6 @@ app.listen(PORT, (e?: Error) => {
     logger.error(e.message);
   } else {
     logger.info(`Listening on port ${PORT}`);
-    createPool();
+    createOrGetPool();
   }
 });
