@@ -5,15 +5,15 @@ import {
   unableToFindUser,
   missingFieldsMessage,
   invalidEmailMessage,
-} from '../shared/constants/message.constants';
-import { Logger } from '../shared/services/logger/logger.service';
-import { generateError } from '../shared/utils/generateError';
-import { generateResponse } from '../shared/utils/generateResponse';
-import { validateEmail } from '../shared/utils/validateEmail';
-import { AuthService, AuthToken } from '../shared/services/auth/auth.service';
-import { authMiddleware } from '../shared/middleware/auth.middleware';
-import { unauthorizedMessage } from '../shared/middleware/middleware.messages';
-import { unableToEncodeTokenMessage } from '../shared/services/auth/constants/auth.messages';
+} from '../../shared/constants/message.constants';
+import { Logger } from '../../shared/services/logger/logger.service';
+import { generateError } from '../../shared/utils/generateError';
+import { generateResponse } from '../../shared/utils/generateResponse';
+import { validateEmail } from '../../shared/utils/validateEmail';
+import { AuthService, AuthToken } from '../../shared/services/auth/auth.service';
+import { authMiddleware } from '../../shared/middleware/auth.middleware';
+import { unauthorizedMessage } from '../../shared/middleware/middleware.messages';
+import { unableToEncodeTokenMessage } from '../../shared/services/auth/constants/auth.messages';
 
 export const authController: Router = express.Router();
 

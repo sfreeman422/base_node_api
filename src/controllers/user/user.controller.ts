@@ -2,22 +2,22 @@ import express, { Router } from 'express';
 import {
   badRequestMessages,
   unableToFindUser,
-  invalidPasswordMessage,
   missingFieldsMessage,
   invalidEmailMessage,
-} from '../shared/constants/message.constants';
-import { Logger } from '../shared/services/logger/logger.service';
-import { generateResponse } from '../shared/utils/generateResponse';
-import { generateError } from '../shared/utils/generateError';
-import { User } from '../shared/db/models/User/User';
-import { UserService } from '../shared/services/user/user.service';
-import { AuthToken } from '../shared/services/auth/auth.service';
-import { authMiddleware } from '../shared/middleware/auth.middleware';
+} from '../../shared/constants/message.constants';
+import { Logger } from '../../shared/services/logger/logger.service';
+import { generateResponse } from '../../shared/utils/generateResponse';
+import { generateError } from '../../shared/utils/generateError';
+import { User } from '../../shared/db/models/User/User';
+import { UserService } from '../../shared/services/user/user.service';
+import { AuthToken } from '../../shared/services/auth/auth.service';
+import { authMiddleware } from '../../shared/middleware/auth.middleware';
 import {
   missingOldPasswordMessage,
   missingNewPasswordMessage,
   genericPasswordUpdateFailureMessage,
-} from '../shared/services/user/constants/user.messages';
+  passwordMismatchMessage,
+} from '../../shared/services/user/constants/user.messages';
 
 export const userController: Router = express.Router();
 
@@ -98,7 +98,7 @@ userController.delete('/user', authMiddleware, async (req, res) => {
           });
 
           res.status(404).send(errorResponse);
-        } else if (e.message === invalidPasswordMessage) {
+        } else if (e.message === passwordMismatchMessage) {
           logger.error('DELETE - /user - Failure', {
             req: { middleware: req.body.middleware.userId },
             correlationId,
