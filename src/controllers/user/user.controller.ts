@@ -84,7 +84,7 @@ userController.delete('/user', authMiddleware, async (req, res) => {
   userService
     .removeUser(req.body.middleware.userId, req.body.password, correlationId)
     .then(() => {
-      logger.error('DELETE - /user - Success', { req: { middleware: req.body.middleware.userId }, correlationId });
+      logger.info('DELETE - /user - Success', { req: { middleware: req.body.middleware.userId }, correlationId });
       res.send(generateResponse('Successfully removed user.', correlationId));
     })
     .catch((e: Error) => {
