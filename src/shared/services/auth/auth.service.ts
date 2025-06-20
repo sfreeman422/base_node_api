@@ -71,7 +71,7 @@ export class AuthService {
         );
       });
     } else {
-      throw new jwt.JsonWebTokenError(unableToFindUser);
+      throw new jwt.JsonWebTokenError(unexpectedError);
     }
   }
 
