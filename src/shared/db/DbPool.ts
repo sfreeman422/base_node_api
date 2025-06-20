@@ -5,7 +5,7 @@ export let DbPool: Pool;
 
 const logger = new Logger('DbPool');
 
-export const createPool = (): Pool => {
+export const createOrGetPool = (): Pool => {
   if (!DbPool) {
     logger.info(`Creating Pool for ${process.env.database}@${process.env.host}:${process.env.dbport}`);
     DbPool = new Pool({
