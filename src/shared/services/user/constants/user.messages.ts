@@ -5,7 +5,7 @@ export const passwordDoesNotMeetRequirements = `Password does not meet requireme
  It contains at least one lower case alphabet.
  It contains at least one special character which includes !@#$%&*()-+=^.
  It doesn’t contain any white space.`;
-export const emailDoesNotMeetRequirements = `Email does not meet requirements. Please ensure your email follows to email@site.tld format.`;
+export const emailDoesNotMeetRequirements = `Email does not meet requirements. Please ensure your email follows the email@site.tld format.`;
 export const unableToValidateUser = 'Unable to validate user. Please try again.';
 export const userAlreadyExists = 'This user already exists.';
 export const passwordMismatchMessage = 'Passwords do not match!';
