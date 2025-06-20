@@ -17,7 +17,7 @@ import {
   missingOldPasswordMessage,
   missingNewPasswordMessage,
   genericPasswordUpdateFailureMessage,
-} from '../shared/services/user/user.messages';
+} from '../shared/services/user/constants/user.messages';
 
 export const userController: Router = express.Router();
 

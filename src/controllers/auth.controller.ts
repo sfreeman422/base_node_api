@@ -12,8 +12,8 @@ import { generateResponse } from '../shared/utils/generateResponse';
 import { validateEmail } from '../shared/utils/validateEmail';
 import { AuthService, AuthToken } from '../shared/services/auth/auth.service';
 import { authMiddleware } from '../shared/middleware/auth.middleware';
-import { unauthorizedMessage } from '../shared/middleware/middlware.messages';
-import { unableToEncodeTokenMessage } from '../shared/services/auth/auth.messages';
+import { unauthorizedMessage } from '../shared/middleware/middleware.messages';
+import { unableToEncodeTokenMessage } from '../shared/services/auth/constants/auth.messages';
 
 export const authController: Router = express.Router();
 

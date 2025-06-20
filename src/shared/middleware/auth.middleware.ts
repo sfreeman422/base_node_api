@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { AuthService } from '../services/auth/auth.service';
 import { JwtPayload } from 'jsonwebtoken';
-import { unauthorizedMessage, malformedTokenMessage } from './middlware.messages';
+import { unauthorizedMessage, malformedTokenMessage } from './middleware.messages';
 import { Logger } from '../services/logger/logger.service';
 
 const authService = new AuthService();

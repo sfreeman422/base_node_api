@@ -2,7 +2,7 @@ import {
   passwordMismatchMessage,
   passwordDoesNotMeetRequirements,
   emailDoesNotMeetRequirements,
-} from '../services/user/user.messages';
+} from '../services/user/constants/user.messages';
 
 export const invalidPasswordMessage = 'Password does not match. Please try again.';
 export const invalidEmailMessage = 'The provided email address is invalid. Please try again.';

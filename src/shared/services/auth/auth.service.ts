@@ -11,9 +11,9 @@ import {
   unexpectedError,
 } from '../../constants/message.constants';
 import { User } from '../../db/models/User/User';
-import { bearerTokenExpTime, refreshTokenExpTime } from './auth.constants';
-import { GetUserByEmailQuerySQL, GetUserByIdQuerySQL } from './queries.constants';
-import { unableToEncodeTokenMessage } from './auth.messages';
+import { bearerTokenExpTime, refreshTokenExpTime } from './constants/auth.constants';
+import { GetUserByEmailQuerySQL, GetUserByIdQuerySQL } from './constants/queries.constants';
+import { unableToEncodeTokenMessage } from './constants/auth.messages';
 
 export interface JwtUserInfo extends JwtPayload {
   user: string;

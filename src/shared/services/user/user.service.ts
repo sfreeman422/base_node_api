@@ -9,7 +9,7 @@ import {
   unableToHashPassword,
   passwordMismatchMessage,
   passwordDoesNotMeetRequirements,
-} from './user.messages';
+} from './constants/user.messages';
 import {
   InsertUserQuerySQL,
   RemoveUserQuerySQL,
@@ -17,7 +17,7 @@ import {
   SelectUserByIdQuerySQL,
   SelectUserByIdWithPasswordQuerySQL,
   UpdateUserPasswordSql,
-} from './queries.constants';
+} from './constants/queries.constants';
 import { v4 as uuid } from 'uuid';
 import {
   invalidEmailMessage,

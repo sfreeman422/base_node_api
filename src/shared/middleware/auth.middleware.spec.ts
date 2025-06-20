@@ -20,7 +20,7 @@ jest.mock('../services/logger/logger.service', () => ({
 }));
 
 import { authMiddleware } from './auth.middleware';
-import { unauthorizedMessage, malformedTokenMessage } from './middlware.messages';
+import { unauthorizedMessage, malformedTokenMessage } from './middleware.messages';
 
 describe('AuthMiddleware', () => {
   let mockRequest: Partial<Request>;
