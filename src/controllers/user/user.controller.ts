@@ -182,7 +182,7 @@ userController.put('/password', authMiddleware, (req, res) => {
   } else {
     userService
       .updatePassword(req.body.middleware.userId, req.body.oldPassword, req.body.password, correlationId)
-      .then((user: User | undefined) => {
+      .then((user: Partial<User> | undefined) => {
         if (user) {
           logger.info('PUT - /password - Success', { correlationId });
 

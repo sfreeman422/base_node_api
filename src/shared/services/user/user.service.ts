@@ -154,7 +154,7 @@ export class UserService {
     oldPassword: string,
     password: string,
     correlationId: string,
-  ): Promise<User | undefined> {
+  ): Promise<Partial<User> | undefined> {
     return this.db.query<User>(SelectUserByIdWithPasswordQuerySQL, [userId]).then(async (result) => {
       if (!result.rows.length) {
         throw new Error(unableToFindUser);
