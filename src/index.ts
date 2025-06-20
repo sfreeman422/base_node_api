@@ -1,3 +1,4 @@
+import './env';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import express, { Application } from 'express';
